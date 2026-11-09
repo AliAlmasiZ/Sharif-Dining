@@ -35,7 +35,6 @@ interface HeaderProps {
   onToggleViewMode: (mode: "grid" | "daily") => void;
   onLogout: () => void;
   onRefresh?: () => void;
-  onOpenAutoReserve?: () => void;
   isLoading?: boolean;
 }
 
@@ -58,7 +57,6 @@ export const Header: React.FC<HeaderProps> = ({
   onToggleViewMode,
   onLogout,
   onRefresh,
-  onOpenAutoReserve,
   isLoading,
 }) => {
   const weekEnd = new Date(weekStart);
@@ -134,18 +132,6 @@ export const Header: React.FC<HeaderProps> = ({
 
           {/* User & Refresh controls */}
           <div className="flex items-center gap-2">
-            {onOpenAutoReserve && (
-              <button
-                type="button"
-                onClick={onOpenAutoReserve}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-all shadow-xs cursor-pointer active:scale-95"
-                title="رزرو خودکار سرور (Cron)"
-              >
-                <RefreshCwIcon className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">رزرو خودکار</span>
-              </button>
-            )}
-
             {onRefresh && (
               <button
                 type="button"

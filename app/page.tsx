@@ -24,7 +24,6 @@ import {
   StatusAlert,
   StatsSummary,
   GridLayoutMode,
-  AutoReserveModal,
   toast,
 } from "@/components";
 
@@ -50,7 +49,6 @@ export default function HomePage() {
   const [selectedMealFilter, setSelectedMealFilter] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [showHidden, setShowHidden] = useState<boolean>(true);
-  const [isAutoReserveOpen, setIsAutoReserveOpen] = useState<boolean>(false);
 
   // Hidden selfs state (persisted in localStorage)
   const [hiddenSelfIds, setHiddenSelfIds] = useState<Set<number>>(() => {
@@ -347,7 +345,6 @@ export default function HomePage() {
         }
         onLogout={() => handleLogout()}
         onRefresh={() => loadWeek(weekStart, auth.token)}
-        onOpenAutoReserve={() => setIsAutoReserveOpen(true)}
         isLoading={loading}
       />
 
@@ -377,16 +374,6 @@ export default function HomePage() {
           onToggleReserve={handleToggleReserve}
         />
       </main>
-
-      {/* Auto-Reserve Server Cron Modal */}
-      <AutoReserveModal
-        isOpen={isAutoReserveOpen}
-        onClose={() => setIsAutoReserveOpen(false)}
-        selfs={selfs}
-        token={auth.token}
-        username={auth.username}
-        onRefreshData={() => loadWeek(weekStart, auth.token)}
-      />
     </div>
   );
 }

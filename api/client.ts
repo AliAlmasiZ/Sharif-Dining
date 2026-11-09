@@ -81,9 +81,7 @@ export async function apiFetch<T = unknown>(
   const isErrorResponse =
     !res.ok ||
     json.type === "ERROR" ||
-    json.type === "error" ||
-    (typeof json.code === "number" && json.code !== 0 && json.code !== 200) ||
-    Boolean(json.error);
+    json.type === "error";
 
   if (isErrorResponse) {
     const errorMsg = json.messageFa || json.message || json.error || `HTTP ${res.status}`;

@@ -11,14 +11,36 @@ import type {
 
 /**
  * Fetch the list of available dining locations (Selfs).
+ * The selfs endpoint sometimes returns a non-zero code with a messageFa like
+ * "سلف های مجاز" while still providing a valid payload — so we bypass the
+ * normal error-throwing path by catching the ApiError and falling back to the
+ * payload embedded in it, if available.
  */
 export async function getSelfs(token: string): Promise<Self[]> {
-  const res = await apiFetch<ApiResponse<Self[]>>("/reservations/selfs", { token });
-  return res.payload || [];
+  try {
+    const res = await apiFetch<ApiResponse<Self[]>>("/reservations/selfs", { token });
+    return res.payload || [];
+  } catch (err: unknown) {
+    // If the server responded with a payload despite the non-success code,
+    // use it rather than propagating the error.
+    if (
+      err instanceof Error &&
+      "payload" in err &&
+      (err as { payload?: ApiResponse<Self[]> }).payload
+    ) {
+      const payload = (err as { payload?: ApiResponse<Self[]> }).payload;
+      if (payload?.payload && Array.isArray(payload.payload) && payload.payload.length > 0) {
+        return payload.payload;
+      }
+    }
+    throw err;
+  }
 }
 
 /**
  * Fetch weekly programs and user reservations for a specific self.
+ * Like the selfs endpoint, this may return a non-success code while still
+ * including a valid payload — fall back to the payload on ApiError.
  */
 export async function getWeekPrograms(
   selfId: number,
@@ -26,11 +48,25 @@ export async function getWeekPrograms(
   token: string
 ): Promise<ProgramsPayload> {
   const query = `selfId=${selfId}&weekStartDate=${weekStartDateIso}+00:00:00`;
-  const res = await apiFetch<ApiResponse<ProgramsPayload>>(
-    `/reservations/programs/v2?${query}`,
-    { token }
-  );
-  return res.payload || {};
+  try {
+    const res = await apiFetch<ApiResponse<ProgramsPayload>>(
+      `/reservations/programs/v2?${query}`,
+      { token }
+    );
+    return res.payload || {};
+  } catch (err: unknown) {
+    if (
+      err instanceof Error &&
+      "payload" in err &&
+      (err as { payload?: ApiResponse<ProgramsPayload> }).payload
+    ) {
+      const apiPayload = (err as { payload?: ApiResponse<ProgramsPayload> }).payload;
+      if (apiPayload?.payload && typeof apiPayload.payload === "object") {
+        return apiPayload.payload;
+      }
+    }
+    throw err;
+  }
 }
 
 /**

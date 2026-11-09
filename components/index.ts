@@ -6,5 +6,4 @@ export * from "./StatusAlert";
 export * from "./StatsSummary";
 export * from "./Icons";
 export * from "./SelfManagerBar";
-export * from "./AutoReserveModal";
 export * from "./Toast";
