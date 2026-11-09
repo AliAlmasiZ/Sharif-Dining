@@ -50,8 +50,6 @@ export const StatsSummary: React.FC<StatsSummaryProps> = ({ data, selfs }) => {
     };
   }, [data, selfs]);
 
-  const [showDebug, setShowDebug] = React.useState(false);
-
   return (
     <div className="w-full px-4 sm:px-6 py-2">
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
@@ -60,18 +58,8 @@ export const StatsSummary: React.FC<StatsSummaryProps> = ({ data, selfs }) => {
           <div className="w-9 h-9 rounded-lg bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 flex items-center justify-center shrink-0">
             <CheckCircleIcon className="w-5 h-5" />
           </div>
-          <div className="flex-1">
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] text-[var(--mute)]">رزروهای این هفته</span>
-              <button
-                type="button"
-                onClick={() => setShowDebug(!showDebug)}
-                className="text-[10px] text-emerald-600 dark:text-emerald-400 hover:underline cursor-pointer"
-                title="مشاهده پاسخ خام API سماد"
-              >
-                {showDebug ? "بستن لاگ" : "دیباگ API"}
-              </button>
-            </div>
+          <div>
+            <div className="text-[11px] text-[var(--mute)]">رزروهای این هفته</div>
             <div className="text-sm sm:text-base font-bold text-[var(--ink)]">
               {formatPersianNumber(stats.count, 0)}{" "}
               <span className="text-xs font-normal text-[var(--mute)]">وعده</span>
@@ -112,32 +100,6 @@ export const StatsSummary: React.FC<StatsSummaryProps> = ({ data, selfs }) => {
           </div>
         </div>
       </div>
-
-      {/* Raw Debug JSON Drawer */}
-      {showDebug && (
-        <div className="mt-3 p-3 rounded-xl bg-zinc-900 text-zinc-100 border border-zinc-700 text-xs font-mono" dir="ltr">
-          <div className="flex items-center justify-between pb-2 border-b border-zinc-800 text-[11px] text-zinc-400">
-            <span>[SAMAD API DEBUG] payload.userWeekReserves ({data.reserves.length} items)</span>
-            <button
-              onClick={() => setShowDebug(false)}
-              className="text-zinc-400 hover:text-white px-2 py-0.5 rounded bg-zinc-800"
-            >
-              ✕ Close
-            </button>
-          </div>
-          <div className="mt-2 max-h-48 overflow-y-auto">
-            {data.reserves.length === 0 ? (
-              <p className="text-zinc-400 italic">
-                هیچ رزروی برای این هفته در userWeekReserves یافت نشد (آرایه خالی است). اگر برای هفته بعد رزرو دارید، دکمه «هفته بعد» را بزنید.
-              </p>
-            ) : (
-              <pre className="text-[11px] whitespace-pre-wrap">
-                {JSON.stringify(data.reserves, null, 2)}
-              </pre>
-            )}
-          </div>
-        </div>
-      )}
     </div>
   );
 };

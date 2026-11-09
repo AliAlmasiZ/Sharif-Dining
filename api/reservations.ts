@@ -132,13 +132,6 @@ export async function loadAllWeekData(
     }
   });
 
-  if (typeof window !== "undefined") {
-    console.log(`[SAMAD API] Week ${weekStartDateIso} Loaded:`, {
-      totalReserves: reserves.length,
-      reservesList: reserves,
-    });
-  }
-
   return {
     data: { programs, reserves },
     failedCount,
