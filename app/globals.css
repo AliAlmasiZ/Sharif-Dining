@@ -1,26 +1,65 @@
+@import url("https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap");
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --bg: #f4f6f4;
+  --panel: #ffffff;
+  --panel-muted: #f8faf8;
+  --ink: #16241e;
+  --mute: #596b63;
+  --line: #d8e0db;
+  --accent: #17684e;
+  --accent-hover: #12533e;
+  --accent-ink: #ffffff;
+  --reserved-bg: #e2f4ea;
+  --reserved-border: #a4ddbf;
+  --warn: #c23824;
+  --warn-bg: #fdf0ed;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --bg: #121715;
+    --panel: #1a221f;
+    --panel-muted: #212c28;
+    --ink: #e3ece8;
+    --mute: #8e9e97;
+    --line: #2b3932;
+    --accent: #43b58c;
+    --accent-hover: #359b76;
+    --accent-ink: #0b1511;
+    --reserved-bg: #1a3328;
+    --reserved-border: #285741;
+    --warn: #e76f59;
+    --warn-bg: #2d1814;
   }
 }
 
+* {
+  box-sizing: border-box;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--bg);
+  color: var(--ink);
+  font-family: Vazirmatn, Tahoma, system-ui, -apple-system, sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+/* Custom scrollbars for week table */
+.custom-scrollbar::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--mute);
 }
